@@ -5,6 +5,8 @@
 1. vanilla JS로 elements 렌더링하기
 2. React(Without JSX)로 elements 렌더링하기
 3. React(Wit JSX)로 elements 렌더링하기
+4. Custom Component 만들기
+5. CSS Framework처럼 Styling하기
 
 ### 1. Basic JavaScript-rendered Hello World
 
@@ -35,7 +37,7 @@
         const element = <div {...props} />;
         ```
 
-### Creating custom components
+### 4. Creating custom components
 
 -   04
 
@@ -90,3 +92,17 @@
     -   react team에서 `prop-types`라는 package를 따로 직접 관리하고 제공함
 
 -   04-extra-5: using React Fragments
+
+### 5. Styling
+
+-   05
+
+    -   `style` prop의 property들은 [`CSSStyleDeclaration`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration)와 매칭됨
+
+-   05-extra-1: Create a custom component
+    ```javascript
+    function Box({ style, className = "", ...otherProps }) {
+        return <div className={`box ${className}`} style={{ fontStyle: "italic", ...style }} {...otherProps} />;
+    }
+    ```
+-   05-extra-12: Accept a size prop to encapsulate styling
