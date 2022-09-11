@@ -7,6 +7,7 @@
 3. React(Wit JSX)로 elements 렌더링하기
 4. Custom Component 만들기
 5. CSS Framework처럼 Styling하기
+6. Form 다루기
 
 ### 1. Basic JavaScript-rendered Hello World
 
@@ -106,3 +107,15 @@
     }
     ```
 -   05-extra-12: Accept a size prop to encapsulate styling
+
+### 6. Forms
+
+-   06
+    -   input value를 얻는 3가지 방법
+        -   by index: `event.target.elements[0].value`
+        -   by name or id attribute: `event.target.elements.usernameInput.value`
+        -   by `ref`: `inputRef.current.value`
+    -   error message를 출력하는 element에는 screen reader 사용자를 위해 `role="alert"`을 추가하는 것이 좋음
+-   06-extra-1: Validate lower-case
+-   06-extra-2: Control the input value
+    -   input value를 직접 컨트롤하고 싶으면 `value` property를 사용
