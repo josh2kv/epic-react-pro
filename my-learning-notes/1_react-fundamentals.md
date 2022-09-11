@@ -8,6 +8,7 @@
 4. Custom Component 만들기
 5. CSS Framework처럼 Styling하기
 6. Form 다루기
+7. Array를 렌더링할 때 key사용하기
 
 ### 1. Basic JavaScript-rendered Hello World
 
@@ -127,5 +128,6 @@
     -   특히, 각 element내에 state를 가지고 있으면 문제가 발생
     -   `key`는 array내에서만 unique하면 됨
     -   `key`가 제공되지 않으면 React는 array index가 제공된 것처럼 변화 전후를 비교해서 렌더링 함
+    -   React는 array를 return해도 React elements를 return하는 것처럼 렌더링 해줌
 -   07-extra-1: Focus Demo
     -   list 중 하나의 input에 fucus를 뒀을 때 'without a key'와 'with array index'는 input의 위치가 바꿔어도 그자리에 남아있음. 하지만 'With a proper key'는 바뀌는 input 위치를 따라감
