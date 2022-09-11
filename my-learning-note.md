@@ -119,3 +119,13 @@
 -   06-extra-1: Validate lower-case
 -   06-extra-2: Control the input value
     -   input value를 직접 컨트롤하고 싶으면 `value` property를 사용
+
+### 7. Rendering Arrays
+
+-   07
+    -   array를 렌더링 할 때는 각 element마다 unique `key` prop을 제공해야 list가 엉키지 않는다.
+    -   특히, 각 element내에 state를 가지고 있으면 문제가 발생
+    -   `key`는 array내에서만 unique하면 됨
+    -   `key`가 제공되지 않으면 React는 array index가 제공된 것처럼 변화 전후를 비교해서 렌더링 함
+-   07-extra-1: Focus Demo
+    -   list 중 하나의 input에 fucus를 뒀을 때 'without a key'와 'with array index'는 input의 위치가 바꿔어도 그자리에 남아있음. 하지만 'With a proper key'는 바뀌는 input 위치를 따라감
