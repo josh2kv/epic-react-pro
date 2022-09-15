@@ -1,14 +1,10 @@
-// useState: tic tac toe
-// 💯 add game history feature
-// http://localhost:3000/isolated/final/04.extra-3.js
-
 import * as React from 'react'
 import {useLocalStorageState} from '../utils'
 
-function Board({squares, onClick}) {
+function Board({squares, selectSquare}) {
   function renderSquare(i) {
     return (
-      <button className="square" onClick={() => onClick(i)}>
+      <button className="square" onClick={() => selectSquare(i)}>
         {squares[i]}
       </button>
     )
@@ -39,6 +35,7 @@ function Game() {
   const [history, setHistory] = useLocalStorageState('tic-tac-toe:history', [
     Array(9).fill(null),
   ])
+
   const [currentStep, setCurrentStep] = useLocalStorageState(
     'tic-tac-toe:step',
     0,
@@ -50,16 +47,13 @@ function Game() {
   const status = calculateStatus(winner, currentSquares, nextValue)
 
   function selectSquare(square) {
-    if (winner || currentSquares[square]) {
-      return
-    }
+    if (winner || currentSquares[square]) return
 
-    const newHistory = history.slice(0, currentStep + 1)
-    console.log(newHistory)
+    const newHistory = history.slice(0, currentStep + 1).map(el => [...el])
     const squares = [...currentSquares]
 
     squares[square] = nextValue
-    setHistory([...newHistory, squares])
+    setHistory([newHistory, squares])
     setCurrentStep(newHistory.length)
   }
 
@@ -68,9 +62,10 @@ function Game() {
     setCurrentStep(0)
   }
 
-  const moves = history.map((stepSquares, step) => {
-    const desc = step ? `Go to move #${step}` : 'Go to game start'
+  const moves = history.map((_, step) => {
+    const desc = step ? `Go to move #${step}` : `Go to game start`
     const isCurrentStep = step === currentStep
+
     return (
       <li key={step}>
         <button disabled={isCurrentStep} onClick={() => setCurrentStep(step)}>
@@ -83,7 +78,7 @@ function Game() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board onClick={selectSquare} squares={currentSquares} />
+        <Board selectSquare={selectSquare} squares={currentSquares} />
         <button className="restart" onClick={restart}>
           restart
         </button>
@@ -94,6 +89,10 @@ function Game() {
       </div>
     </div>
   )
+}
+
+function App() {
+  return <Game />
 }
 
 function calculateStatus(winner, squares, nextValue) {
@@ -126,10 +125,6 @@ function calculateWinner(squares) {
     }
   }
   return null
-}
-
-function App() {
-  return <Game />
 }
 
 export default App

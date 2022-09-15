@@ -4,6 +4,7 @@
 
 1. useState로 상태업데이트하기
 2. useEffect 사용하기 , custom hooks 만들기
+3. state를 colocation하기
 
 ### 1. useState: greeting
 
@@ -21,14 +22,51 @@
     -   hooks가 포함되는 반복되는 로직을 함수에 담은 것
     -   use로 시작
 -   02-extra-4: flexible localStorage hook
+
     -   customized serialize/deserialize를 제공할 수 있도록 해당 parameter가 추가된 듯
+
         ```javascript
-        function useLocalStorageState(key, defaultValue = '', {serialize = JSON.stringify, deserialize = JSON.parse} = {}) { ... }
+        const useLocalStorageState = (
+            key,
+            defaultValue = "",
+            { serialize = JSON.stringify, deserialize = JSON.parse }
+        ) => {
+            const [state, setState] = React.useState(() => {
+                const valueInLocalStorage = window.localStorage.getItem(key);
+
+                if (valueInLocalStorage) {
+                    try {
+                        return deserialize(valueInLocalStorage);
+                    } catch (error) {
+                        window.localStorage.remove(key);
+                    }
+                }
+
+                return typeof defaultValue === "function" ? defaultValue() : defaultValue;
+            });
+
+            const prevKeyRef = React.useRef(key);
+
+            React.useEffect(() => {
+                const prevKey = prevKeyRef.current;
+
+                if (prevKey !== key) {
+                    window.localStorage.removeItem(prevKey);
+                }
+
+                prevKeyRef.current = key;
+                window.localStorage.setItem(key, serialize(state));
+            }, [key, state, serialize]);
+
+            return [state, setState];
+        };
         ```
+
     -   default value가 함수로 제공되는 경우도 고려
         ```javascript
         return typeof defaultValue === "function" ? defaultValue() : defaultValue;
         ```
+
 -   Hook flow
     ![hook flow](../2_react-hooks/src/examples/hook-flow.png)
 
@@ -43,4 +81,15 @@
     -   Context나 Redux를 사용할 때도 꼭 필요한 state만 root에 Provider를 적용하고 각 state에 맞는 가장 가까운 공통된 부모 component에 Provider를 적용할 것
     -   Where to put React State
         ![Where to put React State](https://res.cloudinary.com/kentcdodds-com/image/upload/f_auto,q_auto,dpr_2.0/v1625033349/kentcdodds.com/content/blog/state-colocation-will-make-your-react-app-faster/where-to-put-state.png)
-        > [State Colocation will make your React app f1aster](https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster)
+        > [State Colocation will make your React app faster](https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster)
+
+### 4. useState: tic tac toe
+
+-   04
+    -   Managed State: 명시적으로 관리해야하는 state
+    -   Derived State: 다른 state에 기반해 계산되는 state
+    -   Array에서 `falsy`인 element 걸러내기: `squares.filter(Boolean)`
+
+```
+
+```
